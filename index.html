@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" ng-app="webDay">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+	<title>Angular WebDay</title>
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+	<script src="lib/angular.min.js"></script>
+	<style> .height{ padding-top: 22px; }</style>
+</head>
+<body>
+	<section ng-controller="dataCtrl">
+		<article class="container">
+			<ul class="group-list">
+					<ul class="list-group-item" ng-repeat="data in products">
+							<h3>
+								<em>{{data.name}}</em>
+								<em class="pull-right">{{data.price | currency}}</em>
+								<figure style="text-align:center; margin-right: 40px;">
+								<img src="{{data.imagenes[0].full}}" alt="">
+								</figure>
+							</h3>
+						
+				<div  ng-controller="panels as panel">
+						<ul class="nav nav-pills">
+							<li ng-class="{active: panel.isSelected(1)}">
+								<a href="" ng-click="panel.selectTab(1)">Description</a>
+							</li>
+							<li ng-class="{active: panel.isSelected(2)}">
+								<a href="" ng-click="panel.selectTab(2)">Specifications</a>
+							</li>
+							<li ng-class="{active: panel.isSelected(3)}">
+								<a href="" ng-click="panel.selectTab(3)">Reviews</a>
+							</li>
+						</ul>
+
+						<div class="panel" ng-show="panel.isSelected(1)">
+							<!--<h4>Description</h4>-->
+							<p class="height">{{data.description}}</p>
+						</div>
+						<div class="panel" ng-show="panel.isSelected(2)">
+							<!--<h4>Specifications</h4>-->
+							<p class="height">{{data.specification}}</p>
+							
+						</div>
+						<div class="panel" ng-show="panel.isSelected(3)">
+								<!--<h4>Reviews</h4>-->
+								
+								<blockquote ng-repeat="review in data.reviews">
+									<b>{{review.stars}} Stars</b>
+									<q>{{review.body}}</q><br>
+									<cite>{{review.author}}</cite>
+								</blockquote>
+							
+								<form name="reviewForm" role="form" ng-submit="reviewForm.$valid && addReview(data)" novalidate>
+										<blockquote>
+											<b>{{review.stars}} Stars</b>
+											<q>{{review.body}}</q>
+											<cite>{{review.author}}</cite>
+									</blockquote>
+
+									<div class="form-group" class="form-horizontal"  novalidate>
+										<select class="form-control" ng-model="review.stars" required>
+											<option value="1" >1 Star </option>
+											<option value="2" >2 Stars</option>
+											<option value="3" >3 Stars</option>
+											<option value="4" >4 Stars</option>
+											<option value="5" >5 Stars</option>
+										</select>
+									</div>
+
+									<div class="form-group">
+										<label for="texto">Comentario</label>	
+										<textarea name="texto" class="form-control" placeholder="Comentarios" ng-model="review.body" required></textarea>
+									</div>
+
+									<div class="form-group">
+										<label >By:</label>
+										<input type="email" class="form-control" placeholder="example@domain.com" ng-model="review.author" class=" ng-dirty ng-invalid" required>
+									</div>
+
+									<div class="form-group">
+										<button type="submit" class="btn btn-danger">Submit Review</button>
+									</div>
+
+									<div>reviewForm is {{reviewForm.$valid}}</div>
+
+								</form>
+						
+						</div>
+				</div>
+			</ul>	
+		</ul>
+		</article>
+	</section>
+<script src="js/formulario.js"></script>
+</body>
+</html>
